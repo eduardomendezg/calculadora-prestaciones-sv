@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calculadora de prestaciones laborales · El Salvador</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="hero">
+  <h1>Calculadora de prestaciones laborales</h1>
+  <p>Indemnización, vacaciones, aguinaldo y recargos según el Código de Trabajo de El Salvador.</p>
+</header>
+
+<main class="layout">
+<form id="form" class="col" autocomplete="off" novalidate>
+
+  <section class="card c-beige">
+    <h2>Datos generales</h2>
+    <label class="check"><input type="checkbox" id="anonimo"> Permanecer anónimo</label>
+    <div class="grid">
+      <label>Nombre<input id="nombre" type="text" placeholder="Nombre completo"></label>
+      <label>DUI<input id="dui" type="text" inputmode="numeric" maxlength="10" placeholder="00000000-0"></label>
+      <label>Salario mensual (SBM) *<input id="sbm" type="number" min="0" step="0.01" placeholder="0.00" required></label>
+      <label>Salario mínimo comercio (USD)<input id="smin" type="number" min="0" step="0.01" value="408.80"></label>
+    </div>
+    <small id="errSbm" class="err" hidden>Ingresa el salario mensual para calcular.</small>
+  </section>
+
+  <section class="card c-mint">
+    <h2>Cierre de la relación laboral</h2>
+    <div class="radios">
+      <label><input type="radio" name="tipo" value="despido" checked> Despido injustificado</label>
+      <label><input type="radio" name="tipo" value="renuncia"> Renuncia voluntaria</label>
+    </div>
+    <div class="grid">
+      <label>Fecha de inicio<input id="fIni" type="date"></label>
+      <label>Fecha de fin<input id="fFin" type="date"></label>
+    </div>
+    <p id="hintFechas" class="hint"></p>
+    <div id="boxAviso" hidden>
+      <span class="q">¿Dio aviso de su renuncia?</span>
+      <div class="radios">
+        <label><input type="radio" name="aviso" value="si" checked> Dio aviso</label>
+        <label><input type="radio" name="aviso" value="no"> No dio aviso</label>
+      </div>
+    </div>
+    <p id="msgCierre" class="hint"></p>
+  </section>
+
+  <section class="card c-peach">
+    <h2>Día de descanso semanal laborado</h2>
+    <div class="grid">
+      <label>Cantidad de días<input id="descDias" type="number" min="0" step="1" value="0"></label>
+      <label>O agrégalos por calendario<input id="descFecha" type="date"></label>
+    </div>
+    <div id="descLista" class="chips"></div>
+  </section>
+
+  <section class="card c-blue">
+    <h2>Vacaciones</h2>
+    <label class="check"><input type="checkbox" id="vacOn" checked> Incluir vacaciones</label>
+    <div class="radios">
+      <label><input type="radio" name="vacTipo" value="15" checked> 15 días corridos</label>
+      <label><input type="radio" name="vacTipo" value="7"> 7 días proporcionales</label>
+    </div>
+    <div class="grid">
+      <label>Inicio del disfrute<input id="vacIni" type="date"></label>
+      <label>Fin del disfrute<input id="vacFin" type="date"></label>
+    </div>
+    <div class="radios">
+      <label class="check"><input type="checkbox" id="vacAloj"> Empresa da alojamiento (+25%)</label>
+      <label class="check"><input type="checkbox" id="vacCom"> Empresa da comida (+25%)</label>
+      <label class="check"><input type="checkbox" id="vacProp" checked> Proporcional si no completó el año</label>
+    </div>
+  </section>
+
+  <section class="card c-beige">
+    <h2>Aguinaldo</h2>
+    <div class="radios">
+      <label><input type="radio" name="agui" value="pendiente" checked> No se le ha pagado todavía</label>
+      <label><input type="radio" name="agui" value="pagado"> Ya se pagó</label>
+    </div>
+    <p id="hintAgui" class="hint"></p>
+  </section>
+
+  <section class="card c-mint">
+    <h2>Horas extras y asuetos <span class="opt">opcional</span></h2>
+    <div class="grid">
+      <label>Horas extras diurnas<input id="hed" type="number" min="0" step="0.5" value="0"></label>
+      <label>Horas extras nocturnas<input id="hen" type="number" min="0" step="0.5" value="0"></label>
+      <label>Días de asueto laborados<input id="asuetos" type="number" min="0" step="1" value="0"></label>
+    </div>
+    <details>
+      <summary>Ver días de asueto (nacionales y San Miguel)</summary>
+      <div class="two">
+        <div><h3>Nacionales</h3>
+          <ul>
+            <li>1 de enero</li><li>Jueves, viernes y sábado santo</li><li>1 de mayo</li>
+            <li>10 de mayo (madres, solo a madres)</li><li>17 de junio (padres, solo a padres)</li>
+            <li>3 al 6 de agosto (San Salvador)</li><li>15 de septiembre</li>
+            <li>2 de noviembre</li><li>25 de diciembre</li>
+          </ul></div>
+        <div><h3>San Miguel</h3>
+          <ul>
+            <li>Fiestas patronales en honor a Nuestra Señora de la Paz, alrededor del 21 de noviembre</li>
+            <li>Carnaval de San Miguel, a fines de noviembre</li>
+          </ul>
+          <p class="hint">Las fechas locales las fija el decreto municipal de cada año; confírmalas antes de liquidar.</p></div>
+      </div>
+    </details>
+  </section>
+
+  <button type="submit" class="btn">Calcular liquidación</button>
+</form>
+
+<aside class="col sticky">
+  <section class="card c-blue" id="panel">
+    <h2>Resultados</h2>
+    <div id="vacio" class="hint">Completa el salario y las fechas; los montos aparecen aquí al instante.</div>
+    <table id="tabla" hidden><tbody></tbody></table>
+    <div class="totales" id="totales" hidden>
+      <div><span>TOTAL 1 · Ingresos brutos</span><b id="t1"></b></div>
+      <div><span>ISSS (3%, tope $1,000)</span><b id="isss"></b></div>
+      <div><span>AFP (7.25%)</span><b id="afp"></b></div>
+      <div class="neto"><span>TOTAL 2 · Neto a recibir</span><b id="t2"></b></div>
+    </div>
+    <button type="button" class="btn alt" id="btnPdf" disabled>Exportar a PDF</button>
+  </section>
+</aside>
+</main>
+
+<section id="comprobante" class="print-only"></section>
+<script src="app.js"></script>
+</body>
+</html>
